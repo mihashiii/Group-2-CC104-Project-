@@ -91,6 +91,8 @@ public class AttendanceMonitor implements ActionListener {
             } else if (user.equals(newUser.get(i)) && password.equals(newPass.get(i))) {
                 MenuPage();
                 frame.dispose();
+            } else {
+                success.setText("Incorrect Details!");
             }
         }
       
@@ -247,7 +249,7 @@ public class AttendanceMonitor implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) { 
             MenuPage();
-            frame.dispose();
+            attendanceFrame.dispose();
         
     }});
        
@@ -269,19 +271,21 @@ public class AttendanceMonitor implements ActionListener {
     reportFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     reportFrame.setLocationRelativeTo(null);
 
-    JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Using FlowLayout
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); 
     reportFrame.add(panel);
 
     String[] columns = {"Username", "Date", "Status"};
     DefaultTableModel model = new DefaultTableModel(columns, 0);
     JTable table = new JTable(model);
 
-    for (String[] record : attendanceRecords) {
+   
+    for (int i = 0; i < attendanceRecords.size(); i++) {
+        String[] record = attendanceRecords.get(i);
         model.addRow(record);
-    }
+}
 
     JScrollPane scrollPane = new JScrollPane(table);
-    scrollPane.setPreferredSize(new Dimension(380, 200)); // Set preferred size for scroll pane
+    scrollPane.setPreferredSize(new Dimension(380, 200));
     panel.add(scrollPane);
 
     JButton backButton = new JButton("Back");
