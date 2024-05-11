@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -24,13 +25,19 @@ public class AttendanceMonitor implements ActionListener {
     
     static {
         newUser.add ("user");
-        newPass.add ("admin");
+        newPass.add ("default");
+    }
+    
+     private static ArrayList<String[]> attendanceRecords = new ArrayList<>();
+    static {
+        attendanceRecords.add(new String[]{"Demo", "2024-05-11", "Present"});
+        attendanceRecords.add(new String[]{"Demo", "2024-05-11", "Absent"});
     }
     
 
     public static void main(String[] args) {
         LoginPage();
-     
+        
      
     }
 
@@ -76,7 +83,7 @@ public class AttendanceMonitor implements ActionListener {
     public void actionPerformed(ActionEvent e) { 
         String user = userText.getText();
         String password = passText.getText();
-        
+          
         for (int i = 0; i < newUser.size(); i++) {
        
             if(user.isEmpty() || password.isEmpty()) {
@@ -131,25 +138,38 @@ public class AttendanceMonitor implements ActionListener {
     
     
     public static void MenuPage () {
-        JPanel panelTwo = new JPanel ();
-        JFrame frameTwo = new JFrame ("Attendance Monitoring");
-        frameTwo.setSize(350,200);
-        frameTwo.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        frameTwo.setLocationRelativeTo (null);
+        JPanel panelTwo = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JFrame frameTwo = new JFrame("Attendance Monitoring");
+        frameTwo.setSize(350, 200);
+        frameTwo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameTwo.setLocationRelativeTo(null);
         panelTwo.setBackground(Color.gray);
-        panelTwo.setLayout(null);
         
-        JButton attendance = new JButton ("Check Attendance");
+
+        JButton attendanceButton = new JButton("Mark Attendance");
+       // attendanceButton.setBounds(30, 20, 140, 50);
+        attendanceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AttendancePage();
+                frameTwo.dispose();
+            }
+        });
+        panelTwo.add(attendanceButton);
+
+        JButton attendanceReportButton = new JButton("Attendance Report"); 
+        //attendanceReportButton.setBounds(180, 20, 140, 50);
+        attendanceReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AttendanceReportPage();
+                frameTwo.dispose();
+            }
+        });
+        panelTwo.add(attendanceReportButton);
+
         frameTwo.add(panelTwo);
-        attendance.setFont(new Font ("Arial",Font.BOLD,12));
-        attendance.setBackground (Color.white);
-        attendance.setForeground(Color.black);
-        attendance.setBounds (30,20,140,50);
-        panelTwo.add(attendance);
-        
-        
         frameTwo.setVisible(true);
-        
     }
     
     public static void SignUp () {
@@ -207,5 +227,74 @@ public class AttendanceMonitor implements ActionListener {
         thirdFrame.setVisible (true);
      
     }
+    
+    public static void AttendancePage() {
+        JPanel attendancePanel = new JPanel ();
+        JFrame attendanceFrame = new JFrame ("Attendance");
+        attendanceFrame.setSize(350,200);
+        attendanceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        attendanceFrame.setLocationRelativeTo(null);
+        attendancePanel.setBackground(Color.gray);
+        attendancePanel.setLayout(null);
+        
+        JLabel attendanceLabel = new JLabel ("Attendance Marked!");
+        attendanceLabel.setBounds(100,50,200,25);
+        attendancePanel.add(attendanceLabel);
+        
+        button = new JButton ("Back");
+        button.setBounds (125,120,80,25);
+        button.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) { 
+            MenuPage();
+            frame.dispose();
+        
+    }});
+       
+        attendancePanel.add(button);
+        
+       
+        String username = userText.getText();
+        String currentDate = "2024-05-11";
+        String status = "Present"; 
+        attendanceRecords.add(new String[]{username, currentDate, status});
+        
+        attendanceFrame.add(attendancePanel);
+        attendanceFrame.setVisible(true);
+    }
+    
+    public static void AttendanceReportPage() {
+    JFrame reportFrame = new JFrame("Attendance Report");
+    reportFrame.setSize(400, 300);
+    reportFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    reportFrame.setLocationRelativeTo(null);
+
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Using FlowLayout
+    reportFrame.add(panel);
+
+    String[] columns = {"Username", "Date", "Status"};
+    DefaultTableModel model = new DefaultTableModel(columns, 0);
+    JTable table = new JTable(model);
+
+    for (String[] record : attendanceRecords) {
+        model.addRow(record);
+    }
+
+    JScrollPane scrollPane = new JScrollPane(table);
+    scrollPane.setPreferredSize(new Dimension(380, 200)); // Set preferred size for scroll pane
+    panel.add(scrollPane);
+
+    JButton backButton = new JButton("Back");
+    backButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            MenuPage();
+            reportFrame.dispose();
+        }
+    });
+    panel.add(backButton);
+
+    reportFrame.setVisible(true);
+}
     
 }
