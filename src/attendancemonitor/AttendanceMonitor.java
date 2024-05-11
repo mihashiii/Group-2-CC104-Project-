@@ -24,12 +24,16 @@ public class AttendanceMonitor implements ActionListener {
     private static ArrayList<String> newPass = new ArrayList<>();
     private static ArrayList<Integer> studentId = new ArrayList<>();
     private static ArrayList<String> course = new ArrayList<>();
+    private static ArrayList<String> teacherUser = new ArrayList<>();
+    private static ArrayList<String> teacherPass = new ArrayList<>();
     
         static {
             newUser.add ("user");
             newPass.add ("default");
             studentId.add(2023200855);
             course.add("BSIT");
+            teacherUser.add("thea");
+            teacherPass.add("admin123");
         }
     
          private static ArrayList<String[]> attendanceRecords = new ArrayList<>();
@@ -39,8 +43,7 @@ public class AttendanceMonitor implements ActionListener {
         }
     
     public static void main(String[] args) {
-        LoginPage();
-        
+       LoginPage();
     }
 
     
@@ -99,13 +102,21 @@ public class AttendanceMonitor implements ActionListener {
             foundUser = true; 
             break; 
         }
+        else if (user.equals(teacherUser.get(0)) && password.equals(teacherPass.get(0))) {
+            teacherAdmin();
+            JOptionPane.showMessageDialog(null,"Welcome ADMIN!");
+            frame.dispose();
+            foundUser = true; 
+            break; 
+        }
     }
     
     
     if (!foundUser) {
         JOptionPane.showMessageDialog(null, "Incorrect username/password", "Warning", JOptionPane.WARNING_MESSAGE);
     }
-}});
+
+    }});
         panel.add(button);
         
         bsign = new JButton ("Sign Up");
@@ -312,8 +323,31 @@ public class AttendanceMonitor implements ActionListener {
         attendancePanel.setLayout(null);
         
         JLabel attendanceLabel = new JLabel ("Attendance Marked!");
-        attendanceLabel.setBounds(100,50,200,25);
+        attendanceLabel.setFont(new Font ("Arial",Font.BOLD,20));
+        attendanceLabel.setForeground(Color.WHITE);
+        attendanceLabel.setBounds(75,10,200,25);
         attendancePanel.add(attendanceLabel);
+        
+        
+        String username = userText.getText();
+       String currentDate = "2024-05-11";
+       String status = "Present";
+       String kurso = "";
+       for (int i = 0; i < newUser.size(); i++) {
+        if (username.equals(newUser.get(i))) {
+            kurso = course.get(i);
+            break;
+        }
+    }
+       
+        attendanceRecords.add(new String[]{username, currentDate, status,kurso});
+        
+        JLabel details = new JLabel("<html>User: " + username + "<br>Current Date: " + currentDate + "<br>Status: " + status + "</html>");
+        details.setFont(new Font("Arial", Font.BOLD, 15));
+        details.setHorizontalAlignment(JLabel.CENTER);
+        details.setForeground(Color.WHITE);
+        details.setBounds(75, 30, 200, 75); 
+        attendancePanel.add(details);
         
         button = new JButton ("Back");
         button.setBounds (125,120,80,25);
@@ -328,17 +362,7 @@ public class AttendanceMonitor implements ActionListener {
         attendancePanel.add(button);
         
        
-       String username = userText.getText();
-       String currentDate = "2024-05-11";
-       String status = "Present";
-       String kurso = "";
-       for (int i = 0; i < newUser.size(); i++) {
-        if (username.equals(newUser.get(i))) {
-            kurso = course.get(i);
-            break;
-        }
-    }
-        attendanceRecords.add(new String[]{username, currentDate, status,kurso});
+       
         
         attendanceFrame.add(attendancePanel);
         attendanceFrame.setVisible(true);
@@ -346,12 +370,14 @@ public class AttendanceMonitor implements ActionListener {
     
     public static void AttendanceReportPage() {
     JFrame reportFrame = new JFrame("Attendance Report");
-    reportFrame.setSize(400, 300);
+
+    reportFrame.setSize(600, 400);
     reportFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     reportFrame.setLocationRelativeTo(null);
 
     JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); 
     reportFrame.add(panel);
+    panel.setBackground(Color.gray);
 
     String[] columns = {"Username","Date","Status","Course"};
     DefaultTableModel model = new DefaultTableModel(columns, 0);
@@ -364,8 +390,9 @@ public class AttendanceMonitor implements ActionListener {
 }
 
     JScrollPane scrollPane = new JScrollPane(table);
-    scrollPane.setPreferredSize(new Dimension(380, 200));
+    scrollPane.setPreferredSize(new Dimension(580, 300));
     panel.add(scrollPane);
+   
 
     JButton backButton = new JButton("Back");
     backButton.addActionListener(new ActionListener() {
@@ -379,5 +406,61 @@ public class AttendanceMonitor implements ActionListener {
 
     reportFrame.setVisible(true);
 }
+   
+    public static void teacherAdmin () {
+         JPanel panelOne = new JPanel();
+        JFrame frameTwo = new JFrame("Attendance Monitoring");
+        frameTwo.setSize(600, 350);
+        frameTwo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameTwo.setLocationRelativeTo(null);
+        frameTwo.add(panelOne);
+        panelOne.setLayout(null);
+        panelOne.setBackground(Color.gray);
+        
+        JLabel admin = new JLabel ("Administrator");
+        admin.setFont(new Font("Serif",Font.BOLD,35));
+        admin.setForeground(Color.WHITE);
+        admin.setBounds(178,10,220,50);
+        panelOne.add(admin);
+        
+        button = new JButton ("Check Attendance");
+        button.setFont(new Font("Arial",Font.BOLD,15));
+        button.setBounds (85,80,200,50);
+        panelOne.add(button);
+        
+        JButton addStudents = new JButton ("Add Students");
+        addStudents.setFont(new Font("Arial",Font.BOLD,15));
+        addStudents.setBounds (85,150,200,50);
+        panelOne.add(addStudents);
+        
+        JButton removeStudents = new JButton ("Remove Students");
+        removeStudents.setFont(new Font("Arial",Font.BOLD,15));
+        removeStudents.setBounds (300,150,200,50);
+        panelOne.add(removeStudents);
+        
+        JButton createSched = new JButton ("Create Schedule");
+        createSched.setFont(new Font("Arial",Font.BOLD,15));
+        createSched.setBounds (300,80,200,50);
+        panelOne.add(createSched);
+        
+        JButton Logout = new JButton ("Logout");
+        Logout.setFont(new Font("Arial",Font.BOLD,15));
+        Logout.setBackground(Color.red);
+        Logout.setForeground(Color.WHITE);
+        Logout.setBounds (400,250,150,35);
+        panelOne.add(Logout);
+            Logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            LoginPage();
+            frameTwo.dispose();
+         }});
+        
+        
+        
+        frameTwo.setVisible(true);
+        
+    }
+   
     
 }
