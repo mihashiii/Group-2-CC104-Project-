@@ -20,7 +20,6 @@ public class AttendanceMonitor implements ActionListener {
     private static JButton bsign;
     private static JLabel header;
     private static JFrame thirdFrame;
-    
     private static ArrayList<String> newUser = new ArrayList<>();
     private static ArrayList<String> newPass = new ArrayList<>();
     private static ArrayList<Integer> studentId = new ArrayList<>();
@@ -50,7 +49,8 @@ public class AttendanceMonitor implements ActionListener {
    
     
     public static void LoginPage () {
-         JPanel panel = new JPanel ();
+        
+        JPanel panel = new JPanel ();
         frame = new JFrame ("Attendance Monitoring");
         frame.setSize(350,200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,24 +86,29 @@ public class AttendanceMonitor implements ActionListener {
         button.addActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) { 
-        String user = userText.getText();
-        String password = passText.getText();
+    String user = userText.getText();
+    String password = passText.getText();
           
-        for (int i = 0; i < newUser.size(); i++) {
-       
-            if(user.isEmpty() || password.isEmpty()) {
+    boolean foundUser = false;
+    
+    for (int i = 0; i < newUser.size(); i++) {
+        if(user.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Username/password field cannot be empty!", "Warning", JOptionPane.WARNING_MESSAGE);
-            } else if (user.equals(newUser.get(i)) && password.equals(newPass.get(i))) {
-                MenuPage();
-                JOptionPane.showMessageDialog(null,"Welcome back "+user+"!");
-                frame.dispose();
-            } else {
-               JOptionPane.showMessageDialog(null, "Incorrect username/password", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            }
+            return; 
+        } else if (user.equals(newUser.get(i)) && password.equals(newPass.get(i))) {
+            MenuPage();
+            JOptionPane.showMessageDialog(null,"Welcome back "+user+"!");
+            frame.dispose();
+            foundUser = true; 
+            break; 
         }
-      
-    }});
+    }
+    
+    
+    if (!foundUser) {
+        JOptionPane.showMessageDialog(null, "Incorrect username/password", "Warning", JOptionPane.WARNING_MESSAGE);
+    }
+}});
         panel.add(button);
         
         bsign = new JButton ("Sign Up");
@@ -170,6 +175,21 @@ public class AttendanceMonitor implements ActionListener {
             }
         });
         panelTwo.add(attendanceReportButton);
+        
+        JButton Logout = new JButton("Logout");
+        Logout.setBounds(20, 120, 80, 20);
+        Logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+                LoginPage();
+                frameTwo.dispose();
+                
+            }
+        });
+        
+        frameTwo.add (Logout);
+        
 
         frameTwo.add(panelTwo);
         frameTwo.setVisible(true);
@@ -230,9 +250,9 @@ public class AttendanceMonitor implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String user = userText.getText();
             String password = new String(passText.getPassword());
-            String Course = courseText.getText(); // Retrieve course information
+            String Course = courseText.getText();
             
-            // Retrieve student identification
+           
             String idTextValue = idText.getText();
             int studentIdentification = 0;
             try {
@@ -249,7 +269,7 @@ public class AttendanceMonitor implements ActionListener {
 
             boolean accountExists = false;
             for (int i = 0; i < newUser.size(); i++) {
-                if (user.equals(newUser.get(i)) && password.equals(newPass.get(i))) {
+                if (user.equals(newUser.get(i))) {
                     JOptionPane.showMessageDialog(null, "An account with this username/password already exists.");
                     accountExists = true;
                     break; 
@@ -308,7 +328,7 @@ public class AttendanceMonitor implements ActionListener {
        String username = userText.getText();
        String currentDate = "2024-05-11";
        String status = "Present";
-       String kurso = ""; // 
+       String kurso = "";
        for (int i = 0; i < newUser.size(); i++) {
         if (username.equals(newUser.get(i))) {
             kurso = course.get(i);
@@ -330,7 +350,7 @@ public class AttendanceMonitor implements ActionListener {
     JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); 
     reportFrame.add(panel);
 
-    String[] columns = {"Username", "Date", "Status","Section"};
+    String[] columns = {"Username","Date","Status","Course"};
     DefaultTableModel model = new DefaultTableModel(columns, 0);
     JTable table = new JTable(model);
 
