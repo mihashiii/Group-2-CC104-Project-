@@ -29,7 +29,7 @@ public class AttendanceMonitor implements ActionListener {
     
 
     public static void main(String[] args) {
-        
+        LoginPage();
      
      
     }
