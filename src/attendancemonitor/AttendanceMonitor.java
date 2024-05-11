@@ -38,15 +38,11 @@ public class AttendanceMonitor implements ActionListener {
                 attendanceRecords.add(new String[]{"Demo", "2024-05-11", "Absent","BSIT"});
         }
     
-
     public static void main(String[] args) {
         LoginPage();
         
-     
     }
 
-    
-   
     
     public static void LoginPage () {
         
@@ -83,6 +79,7 @@ public class AttendanceMonitor implements ActionListener {
         
         button = new JButton ("Login");
         button.setBounds (220,120,80,25);
+        
         button.addActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) { 
@@ -136,16 +133,12 @@ public class AttendanceMonitor implements ActionListener {
         
     }
     
-    
-    
     @Override
     public void actionPerformed(ActionEvent e) {
      
     }
     
-    
-    
-    public static void MenuPage () {
+    public static void MenuPage() {
         JPanel panelTwo = new JPanel ();//(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JFrame frameTwo = new JFrame("Attendance Monitoring");
         frameTwo.setSize(350, 200);
@@ -241,7 +234,18 @@ public class AttendanceMonitor implements ActionListener {
     JTextField courseText = new JTextField(20);
     courseText.setBounds(100, 140, 200, 25);
     thirdPanel.add(courseText);
+    
+    JButton backButton = new JButton("Back");
+    backButton.setBounds(100, 180, 80, 25);
+    backButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LoginPage();
+            thirdFrame.dispose();
+        }
+    });
 
+    thirdPanel.add(backButton);
 
     JButton submit = new JButton("Submit");
     submit.setBounds(220, 180, 80, 25);
@@ -250,10 +254,14 @@ public class AttendanceMonitor implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String user = userText.getText();
             String password = new String(passText.getPassword());
-            String Course = courseText.getText();
-            
-           
+            String Course = courseText.getText();  
             String idTextValue = idText.getText();
+            
+            if (user.isEmpty() || password.isEmpty() || Course.isEmpty() || idTextValue.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please fill in the required fields.");
+                return; 
+            }
+            
             int studentIdentification = 0;
             try {
                 studentIdentification = Integer.parseInt(idTextValue);
@@ -262,11 +270,6 @@ public class AttendanceMonitor implements ActionListener {
                 return;
             }
             
-            if (user.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please fill in the required fields.");
-                return; 
-            }
-
             boolean accountExists = false;
             for (int i = 0; i < newUser.size(); i++) {
                 if (user.equals(newUser.get(i))) {
