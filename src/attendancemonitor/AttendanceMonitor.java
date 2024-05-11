@@ -457,9 +457,8 @@ public class AttendanceMonitor implements ActionListener {
          }});
         
         
-        
         frameTwo.setVisible(true);
-        
+        //testing
     }
    
     
