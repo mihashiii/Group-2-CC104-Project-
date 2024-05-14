@@ -203,7 +203,7 @@ public class AttendanceMonitor implements ActionListener {
         Logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               
+               ///
                 LoginPage();
                 frameTwo.dispose();
                 
@@ -604,7 +604,7 @@ public class AttendanceMonitor implements ActionListener {
 
     reportFrame.setVisible(true);
 }
-       
+       kk
 }
 
 
